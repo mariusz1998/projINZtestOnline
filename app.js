@@ -40,10 +40,22 @@ res.render('index',{movies: movieArr});
         });
 
 });
-app.get('/dalej', function(req,res){ 
-//res.send((path.join)(__dirname+'dalej123'));
-res.render('dalej123.ejs');
-    //res.redner('dalej123');
+app.get('/aktorzy', function(req,res){ 
+session
+        .run('MATCH(n:Person) RETURN n LIMIT 25')
+        .then(function(result2){
+            var actorArr= [];
+            result2.records.forEach(function(record){
+                actorArr.push({
+                    id: record._fields[0].identity.low,
+                    name: record._fields[0].properties.name
+                });
+            });
+res.render('aktorzy',{actors: actorArr});
+        })
+                .catch(function(err){
+           console.log();         
+        });
 });
 
 
