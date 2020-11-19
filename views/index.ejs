@@ -1,0 +1,10 @@
+<h1>Movies</h1>
+<ul>
+    <% movies.forEach(function(movie){ %>
+    <li> <%= movie.title %></li>
+    <% }) %>
+</ul>
+
+<form method="get" action="/dalej">
+    <input type="submit" value="Submit">
+</form>

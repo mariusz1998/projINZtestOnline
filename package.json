@@ -1,0 +1,20 @@
+{
+  "name": "projektneo4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {"start":"node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "*",
+    "driver": "^1.0.0",
+    "ejs": "^2.4.2",
+    "expres": "*",
+    "express": "^4.17.1",
+    "morgan": "*",
+    "neo4j-driver": "^4.1.2"
+  }
+}
