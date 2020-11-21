@@ -67,27 +67,28 @@ app.post('/movie/add',function(req,res){
             .run('CREATE(n:Movie {title:$titleParam,year:$yearParam}) RETURN n.title',
   {titleParam:name,yearParam:year})
        // .run('MATCH (n:Movie {title:"Star Wars Sand"})DELETE n')
-            .then(function(result){
-              //    res.redirect('/'); 
-      //  session123.close();
+            .then(function(result){    
+                  res.redirect('/');
+                    // session123.close();
+       
     })
             .catch(function(err){
                 console.log(err);
     });
-   res.redirect('/');// wysyła do początkowej stronny
+ //  res.redirect('/');// wysyła do początkowej stronny
 });
 
 app.post('/movie/delete',function(req,res){
     session123
         .run('MATCH (n:Movie {title:"Star Wars Sand"})DELETE n')
             .then(function(result){
-               //   res.redirect('/'); 
+                  res.redirect('/'); 
        // session123.close();
     })
             .catch(function(err){
                 console.log(err);
     });
-   res.redirect('/');// wysyła do początkowej stronny
+  // res.redirect('/');// wysyła do początkowej stronny
 });
 
 app.listen(3000);
