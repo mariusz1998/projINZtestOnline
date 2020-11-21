@@ -23,7 +23,7 @@ var session = driver.session();
 
 app.get('/', function (req,res){
     session
-        .run('MATCH(n:Movie) RETURN n LIMIT 25')
+        .run('MATCH(n:Movie) RETURN n LIMIT 55')
         .then(function(result){
                 var movieArr =[];
 result.records.forEach(function(record){
@@ -35,6 +35,7 @@ result.records.forEach(function(record){
 });
 res.render('index',{movies: movieArr});
         })
+       
         .catch(function(err){
             console.log(err);
         });
@@ -42,7 +43,8 @@ res.render('index',{movies: movieArr});
 });
 app.get('/aktorzy', function(req,res){ 
 session
-        .run('MATCH(n:Person) RETURN n LIMIT 25')
+        .open()
+        .run('MATCH(n:Person) RETURN n LIMIT 50')
         .then(function(result2){
             var actorArr= [];
             result2.records.forEach(function(record){
@@ -57,7 +59,36 @@ res.render('aktorzy',{actors: actorArr});
            console.log();         
         });
 });
+var session123 = driver.session();
+app.post('/movie/add',function(req,res){
+    var name = req.body.movie_name;
+    var year = req.body.movie_year;
+    session123
+            .run('CREATE(n:Movie {title:$titleParam,year:$yearParam}) RETURN n.title',
+  {titleParam:name,yearParam:year})
+       // .run('MATCH (n:Movie {title:"Star Wars Sand"})DELETE n')
+            .then(function(result){
+              //    res.redirect('/'); 
+      //  session123.close();
+    })
+            .catch(function(err){
+                console.log(err);
+    });
+   res.redirect('/');// wysyła do początkowej stronny
+});
 
+app.post('/movie/delete',function(req,res){
+    session123
+        .run('MATCH (n:Movie {title:"Star Wars Sand"})DELETE n')
+            .then(function(result){
+               //   res.redirect('/'); 
+       // session123.close();
+    })
+            .catch(function(err){
+                console.log(err);
+    });
+   res.redirect('/');// wysyła do początkowej stronny
+});
 
 app.listen(3000);
 console.log('Server Started on Port 3000');
