@@ -5,4 +5,15 @@
    <li><%= actor.name %> </li>
   <% }) %>  
 </ul>
-asd
+
+
+<h3>Add Actor To Movie</h3>
+<form method="post" action="/movie/actor/add">
+    <label>Movie Name</label><br>
+    <input type="text" name="title">
+    <br>
+    <label>Actor Name</label><br>
+        <input type="text" name="name">
+        <br><br>
+        <input type="submit" value="Dodaj aktora do filmu">
+</form>

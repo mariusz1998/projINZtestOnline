@@ -43,7 +43,7 @@ res.render('index',{movies: movieArr});
 });
 app.get('/aktorzy', function(req,res){ 
 session
-        .open()
+      
         .run('MATCH(n:Person) RETURN n LIMIT 50')
         .then(function(result2){
             var actorArr= [];
@@ -77,7 +77,6 @@ app.post('/movie/add',function(req,res){
     });
  //  res.redirect('/');// wysyła do początkowej stronny
 });
-
 app.post('/movie/delete',function(req,res){
     session123
         .run('MATCH (n:Movie {title:"Star Wars Sand"})DELETE n')
@@ -90,7 +89,20 @@ app.post('/movie/delete',function(req,res){
     });
   // res.redirect('/');// wysyła do początkowej stronny
 });
-
+app.post('/movie/actor/add',function(req,res){
+    var name = req.body.name; //do aktora
+    var title = req.body.title;
+    session123
+            .run('MATCH(a:Person{name:$nameParam}),(b:Movie{title:$titleParam}) MERGE(a)-[r:ACTED_IN {year:2012}]-(b) RETURN a,b'
+            ,{titleParam: title, nameParam:name})
+            //dodało year 2012
+                    .then(function(result){
+                        res.redirect('/aktorzy');
+            })
+                    .catch(function(err){
+                        console.log(err);          
+            });
+});
 app.listen(3000);
 console.log('Server Started on Port 3000');
 
