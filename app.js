@@ -63,7 +63,7 @@ var session123 = driver.session();
 app.post('/movie/add',function(req,res){
     var name = req.body.movie_name;
     var year = req.body.movie_year;
-    session123
+    session123                  //dajesz kolejne atrybuty po przecinku w tym nawiasie {}
             .run('CREATE(n:Movie {title:$titleParam,year:$yearParam}) RETURN n.title',
   {titleParam:name,yearParam:year})
        // .run('MATCH (n:Movie {title:"Star Wars Sand"})DELETE n')
