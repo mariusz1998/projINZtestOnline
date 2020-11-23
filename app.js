@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 
-var driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('neo4j','mariusz'));
+var driver = neo4j.driver('bolt://54.237.207.193:32929', neo4j.auth.basic('neo4j','troubleshooter-confinements-sidewalks'));
 
 var session = driver.session();
 
