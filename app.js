@@ -1,10 +1,8 @@
-
 var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var neo4j = require('neo4j-driver');
-
 var app = express();
 
 //view engine 
@@ -16,34 +14,46 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use("/public1", express.static(__dirname + "/public1"));
 
-var driver = neo4j.driver('bolt://54.237.207.193:32929', neo4j.auth.basic('neo4j','troubleshooter-confinements-sidewalks'));
+app.use("/public2", express.static(__dirname + "/public2"));
+
+var driver = neo4j.driver('bolt://54.237.207.193:32954', neo4j.auth.basic('neo4j','toe-employees-interests'));
 
 var session = driver.session();
 
+//app.use zobacz
 app.get('/', function (req,res){
-    session
-        .run('MATCH(n:Movie) RETURN n LIMIT 55')
-        .then(function(result){
-                var movieArr =[];
-result.records.forEach(function(record){
-    movieArr.push({
-        id: record._fields[0].identity.low,
-        title: record._fields[0].properties.title,
-        year: record._fields[0].properties.year
-    });
+    res.render('mainMenu');
 });
-res.render('index',{movies: movieArr});
-        })
-       
-        .catch(function(err){
-            console.log(err);
-        });
+app.get('/registration', function(req,res){ 
+res.render('registration');
+});
+//app.get('/login', function(req,res){ 
+//res.render('login');
+//});
 
+var session123 = driver.session();
+app.post('/registration/add',function(req,res){
+    var firstName = req.body.firstName;
+    var lastName = req.body.lastName;
+       var login = req.body.login;
+       var password = req.body.password;
+       var email = req.body.email;
+    session123            
+            .run('CREATE(n:User {firstName:$firstNameParam,lastName:$lastNameParam,login:$loginParam,password:$passwordParam,email:$emailParam}) RETURN n.login',
+  {firstNameParam:firstName,lastNameParam:lastName,loginParam:login,passwordParam:password,emailParam:email})
+            .then(function(result){    
+                  res.redirect('/registration');
+                    // session123.close();
+    })
+            .catch(function(err){
+                console.log(err);
+    });
+ //  res.redirect('/');// wysyła do początkowej stronny
 });
-app.get('/aktorzy', function(req,res){ 
+app.get('/user/login/count', function(req,res){ 
 session
-      
         .run('MATCH(n:Person) RETURN n LIMIT 50')
         .then(function(result2){
             var actorArr= [];
@@ -59,7 +69,25 @@ res.render('aktorzy',{actors: actorArr});
            console.log();         
         });
 });
-var session123 = driver.session();
+
+
+app.get('/login', function(req,res){ 
+session
+        .run('MATCH(n:User) RETURN n.login ')
+        .then(function(result2){
+            var userArr= [];
+            result2.records.forEach(function(record){
+                userArr.push({
+                    login: record._fields[0].properties.login,
+                    password: record._fields[0].properties.password
+                });
+            });
+res.render('login',{users:userArr});
+        })
+                .catch(function(err){
+           console.log(err);         
+        });
+});
 app.post('/movie/add',function(req,res){
     var name = req.body.movie_name;
     var year = req.body.movie_year;
