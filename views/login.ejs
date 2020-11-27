@@ -3,9 +3,6 @@
     <link rel="stylesheet" href="/public1/CSS/style.css">
     <title>Login</title>
  </head>
-  <ul>
-   <li><%= users.login %> </li>
-</ul>
  <ul>
    <% users.forEach(function(user){ %>
    <li><%= user.login %> </li>
@@ -17,7 +14,7 @@
 <form method="post" action="/login/verify">
     <label>Login</label>
     <br>
-    <input type="text" name="login" id="login">
+    <input type="text" name="login">
     <br>
     <label>Password<label><br>
        <input type="password" name="password">
